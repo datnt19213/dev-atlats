@@ -1,0 +1,1415 @@
+{
+  "info": {
+    "name": "DevAtlas MVP Tauri Command Contracts",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "DevAtlas MVP uses Tauri commands instead of HTTP APIs. This collection documents the real command names, request bodies, response shapes, and structured error payloads used by the desktop frontend. Command errors use {\"code\":\"stable.error_code\",\"message\":\"Human-readable message\"}. Versioned domain events are emitted to the frontend through the devatlas://domain-event Tauri event."
+  },
+  "item": [
+    {
+      "name": "list_repositories",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/list_repositories",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["list_repositories"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Repositories Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "tauri://command/list_repositories",
+              "protocol": "tauri",
+              "host": ["command"],
+              "path": ["list_repositories"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "[{\"repositoryId\":\"repo-example\",\"name\":\"sample\",\"path\":\"C:\\\\code\\\\sample\"}]"
+        }
+      ]
+    },
+    {
+      "name": "open_repository",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/open_repository",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["open_repository"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"path\":\"C:\\\\path\\\\to\\\\repository\"}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Repository Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"repositoryId\":\"repo-example\",\"name\":\"sample\",\"path\":\"C:\\\\path\\\\to\\\\repository\"}"
+        },
+        {
+          "name": "Missing Repository Path Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"repository.path_missing\",\"message\":\"Repository path does not exist: C:\\\\path\\\\to\\\\repository\"}"
+        }
+      ]
+    },
+    {
+      "name": "scan_repository",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/scan_repository",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["scan_repository"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"maxFiles\":null}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Scan Result Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"scanId\":\"scan-example\",\"repositoryId\":\"repo-example\",\"files\":120,\"folders\":24,\"durationMs\":150,\"technologies\":[{\"category\":\"Language\",\"name\":\"TypeScript\",\"version\":null}],\"repositoryFiles\":[{\"path\":\"src/main.tsx\",\"extension\":\"tsx\",\"sizeBytes\":1024}]}"
+        },
+        {
+          "name": "Repository Not Open Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"repository.not_open\",\"message\":\"Open a repository before scanning.\"}"
+        }
+      ]
+    },
+    {
+      "name": "list_repository_files",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/list_repository_files",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["list_repository_files"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Repository Files Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "tauri://command/list_repository_files",
+              "protocol": "tauri",
+              "host": ["command"],
+              "path": ["list_repository_files"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "[{\"path\":\"src/main.tsx\",\"extension\":\"tsx\",\"sizeBytes\":1024}]"
+        }
+      ]
+    },
+    {
+      "name": "detect_technologies",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/detect_technologies",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["detect_technologies"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Technologies Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "tauri://command/detect_technologies",
+              "protocol": "tauri",
+              "host": ["command"],
+              "path": ["detect_technologies"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "[{\"category\":\"Language\",\"name\":\"TypeScript\",\"version\":null}]"
+        }
+      ]
+    },
+    {
+      "name": "build_graph",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/build_graph",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["build_graph"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Graph Summary Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"nodeCount\":240,\"edgeCount\":315}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before building the graph.\"}"
+        }
+      ]
+    },
+    {
+      "name": "save_graph_snapshot",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/save_graph_snapshot",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["save_graph_snapshot"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Graph Snapshot Summary Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"id\":\"graph-snapshot-example\",\"repositoryId\":\"repo-example\",\"scanId\":\"scan-example\",\"nodeCount\":240,\"edgeCount\":315,\"createdAtMs\":1710000000000}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before saving a graph snapshot.\"}"
+        }
+      ]
+    },
+    {
+      "name": "list_graph_snapshots",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/list_graph_snapshots",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["list_graph_snapshots"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Graph Snapshot List Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "[{\"id\":\"graph-snapshot-example\",\"repositoryId\":\"repo-example\",\"scanId\":\"scan-example\",\"nodeCount\":240,\"edgeCount\":315,\"createdAtMs\":1710000000000}]"
+        },
+        {
+          "name": "Repository Not Open Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"repository.not_open\",\"message\":\"Open a repository before reading repository data.\"}"
+        }
+      ]
+    },
+    {
+      "name": "load_graph_snapshot",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/load_graph_snapshot",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["load_graph_snapshot"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"snapshotId\":\"graph-snapshot-example\"}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Graph Snapshot Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"id\":\"graph-snapshot-example\",\"repositoryId\":\"repo-example\",\"scanId\":\"scan-example\",\"graph\":{\"nodes\":[{\"id\":\"node-1\",\"nodeType\":\"file\",\"name\":\"src/main.tsx\"}],\"edges\":[{\"id\":\"edge-1\",\"source\":\"node-1\",\"target\":\"node-2\",\"edgeType\":\"imports\"}]},\"nodeCount\":240,\"edgeCount\":315,\"createdAtMs\":1710000000000}"
+        },
+        {
+          "name": "Missing Snapshot Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"storage.sqlite_error\",\"message\":\"Query returned no rows\"}"
+        }
+      ]
+    },
+    {
+      "name": "generate_docs",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/generate_docs",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["generate_docs"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Generate Documentation Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "tauri://command/generate_docs",
+              "protocol": "tauri",
+              "host": ["command"],
+              "path": ["generate_docs"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "[{\"id\":\"doc-readme-example\",\"path\":\"docs/README.md\",\"documentType\":\"README\",\"content\":\"# Repository Knowledge Package\"},{\"id\":\"doc-architecture-example\",\"path\":\"docs/architecture.md\",\"documentType\":\"Architecture\",\"content\":\"# Architecture Overview\"},{\"id\":\"doc-modules-example\",\"path\":\"docs/modules.md\",\"documentType\":\"Modules\",\"content\":\"# Module Overview\"},{\"id\":\"doc-api-summary-example\",\"path\":\"docs/api-summary.md\",\"documentType\":\"API Summary\",\"content\":\"# API Summary\"},{\"id\":\"doc-database-summary-example\",\"path\":\"docs/database-summary.md\",\"documentType\":\"Database Summary\",\"content\":\"# Database Summary\"},{\"id\":\"doc-onboarding-example\",\"path\":\"docs/onboarding.md\",\"documentType\":\"Onboarding\",\"content\":\"# Developer Onboarding\"},{\"id\":\"doc-ai-context-example\",\"path\":\"docs/ai-context.md\",\"documentType\":\"AI Context\",\"content\":\"# AI Context\"}]"
+        }
+      ]
+    },
+    {
+      "name": "generate_diagrams",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/generate_diagrams",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["generate_diagrams"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Generate Diagrams Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "tauri://command/generate_diagrams",
+              "protocol": "tauri",
+              "host": ["command"],
+              "path": ["generate_diagrams"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "[{\"id\":\"diagram-class-example\",\"path\":\"diagrams/class.puml\",\"diagramType\":\"Class\",\"format\":\"PlantUML\",\"content\":\"@startuml\"},{\"id\":\"diagram-component-example\",\"path\":\"diagrams/component.mmd\",\"diagramType\":\"Component\",\"format\":\"Mermaid\",\"content\":\"flowchart TD\"},{\"id\":\"diagram-dependency-example\",\"path\":\"diagrams/dependency.puml\",\"diagramType\":\"Dependency\",\"format\":\"PlantUML\",\"content\":\"@startuml\"},{\"id\":\"diagram-erd-example\",\"path\":\"diagrams/erd.mmd\",\"diagramType\":\"ERD\",\"format\":\"Mermaid\",\"content\":\"erDiagram\"},{\"id\":\"diagram-folder-example\",\"path\":\"diagrams/folder-structure.svg\",\"diagramType\":\"Folder Structure\",\"format\":\"SVG\",\"content\":\"<svg\"},{\"id\":\"diagram-package-example\",\"path\":\"diagrams/package.mmd\",\"diagramType\":\"Package\",\"format\":\"Mermaid\",\"content\":\"flowchart TD\"},{\"id\":\"diagram-architecture-overview-example\",\"path\":\"diagrams/architecture-overview.mmd\",\"diagramType\":\"Architecture Overview\",\"format\":\"Mermaid\",\"content\":\"flowchart LR\"}]"
+        }
+      ]
+    },
+    {
+      "name": "export_package",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/export_package",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["export_package"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"outputDir\":\"C:\\\\path\\\\to\\\\exports\"}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Export Package Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "tauri://command/export_package",
+              "protocol": "tauri",
+              "host": ["command"],
+              "path": ["export_package"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"outputDir\":\"C:\\\\path\\\\to\\\\exports\"}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"id\":\"export-example\",\"path\":\"C:\\\\path\\\\to\\\\exports\\\\project-knowledge.zip\",\"artifactsDir\":\"C:\\\\path\\\\to\\\\exports\",\"artifactCount\":16}"
+        }
+      ]
+    },
+    {
+      "name": "build_ai_context",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/build_ai_context",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["build_ai_context"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "AI Context Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"chunks\":[{\"id\":\"chunk-example\",\"path\":\"src/main.tsx\",\"chunkIndex\":0,\"startLine\":1,\"endLine\":80,\"content\":\"import React from 'react';\",\"charCount\":28,\"tokenEstimate\":7}],\"skippedFiles\":[{\"path\":\"assets/logo.png\",\"reason\":\"Unsupported Extension\"}]}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before building AI context.\"}"
+        }
+      ]
+    },
+    {
+      "name": "build_ai_embeddings",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/build_ai_embeddings",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["build_ai_embeddings"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "AI Embeddings Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"embeddings\":[{\"id\":\"embedding-example\",\"chunkId\":\"chunk-example\",\"path\":\"src/main.tsx\",\"dimensions\":128,\"model\":\"devatlas-local-hash-v1\",\"values\":[0.0,0.25,-0.25]}],\"dimensions\":128,\"model\":\"devatlas-local-hash-v1\"}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before building AI embeddings.\"}"
+        }
+      ]
+    },
+    {
+      "name": "build_ai_vector_store",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/build_ai_vector_store",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["build_ai_vector_store"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "AI Vector Store Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"embeddingCount\":42,\"dimensions\":128,\"model\":\"devatlas-local-hash-v1\"}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before building the AI vector store.\"}"
+        }
+      ]
+    },
+    {
+      "name": "save_ai_vector_snapshot",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/save_ai_vector_snapshot",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["save_ai_vector_snapshot"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "AI Vector Snapshot Summary Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"id\":\"ai-vector-snapshot-example\",\"repositoryId\":\"repo-example\",\"scanId\":\"scan-example\",\"embeddingCount\":42,\"dimensions\":128,\"model\":\"devatlas-local-hash-v1\",\"createdAtMs\":1710000000000}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before saving an AI vector snapshot.\"}"
+        }
+      ]
+    },
+    {
+      "name": "list_ai_vector_snapshots",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/list_ai_vector_snapshots",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["list_ai_vector_snapshots"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "AI Vector Snapshot List Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "[{\"id\":\"ai-vector-snapshot-example\",\"repositoryId\":\"repo-example\",\"scanId\":\"scan-example\",\"embeddingCount\":42,\"dimensions\":128,\"model\":\"devatlas-local-hash-v1\",\"createdAtMs\":1710000000000}]"
+        },
+        {
+          "name": "Repository Not Open Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"repository.not_open\",\"message\":\"Open a repository before reading repository data.\"}"
+        }
+      ]
+    },
+    {
+      "name": "load_ai_vector_snapshot",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/load_ai_vector_snapshot",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["load_ai_vector_snapshot"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"snapshotId\":\"ai-vector-snapshot-example\"}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "AI Vector Snapshot Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"id\":\"ai-vector-snapshot-example\",\"repositoryId\":\"repo-example\",\"scanId\":\"scan-example\",\"embeddings\":[{\"id\":\"embedding-example\",\"chunkId\":\"chunk-example\",\"path\":\"src/main.tsx\",\"dimensions\":128,\"model\":\"devatlas-local-hash-v1\",\"values\":[0.0,0.25,-0.25]}],\"embeddingCount\":42,\"dimensions\":128,\"model\":\"devatlas-local-hash-v1\",\"createdAtMs\":1710000000000}"
+        },
+        {
+          "name": "Missing Snapshot Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"storage.sqlite_error\",\"message\":\"Query returned no rows\"}"
+        }
+      ]
+    },
+    {
+      "name": "search_ai_context",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/search_ai_context",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["search_ai_context"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"query\":\"scan repository technologies\",\"limit\":5}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "AI Retrieval Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"query\":\"scan repository technologies\",\"matches\":[{\"chunkId\":\"chunk-example\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"content\":\"pub fn scan_repository() {}\",\"score\":0.92,\"vectorScore\":0.88,\"lexicalScore\":1.0}]}"
+        },
+        {
+          "name": "Missing Query Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"ai_retrieval.query_missing\",\"message\":\"AI retrieval query is required.\"}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before searching AI context.\"}"
+        }
+      ]
+    },
+    {
+      "name": "search_ai_context_snapshot",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/search_ai_context_snapshot",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["search_ai_context_snapshot"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"snapshotId\":\"ai-vector-snapshot-example\",\"query\":\"scan repository technologies\",\"limit\":5}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Persisted AI Retrieval Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"query\":\"scan repository technologies\",\"matches\":[{\"chunkId\":\"chunk-example\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"content\":\"pub fn scan_repository() {}\",\"score\":0.92,\"vectorScore\":0.88,\"lexicalScore\":1.0}]}"
+        },
+        {
+          "name": "Missing Snapshot Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"storage.sqlite_error\",\"message\":\"Query returned no rows\"}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before searching saved AI context.\"}"
+        }
+      ]
+    },
+    {
+      "name": "build_ai_context_bundle",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/build_ai_context_bundle",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["build_ai_context_bundle"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"query\":\"scan repository technologies\",\"limit\":5,\"maxTokens\":4000}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "AI Context Bundle Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"query\":\"scan repository technologies\",\"content\":\"[S1] src/scanner.rs:1-80\\npub fn scan_repository() {}\",\"sources\":[{\"sourceId\":\"S1\",\"chunkId\":\"chunk-example\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92,\"tokenEstimate\":18}],\"tokenEstimate\":18,\"maxTokens\":4000,\"truncated\":false}"
+        },
+        {
+          "name": "Small Token Budget Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"ai_context_builder.max_tokens_too_small\",\"message\":\"AI context bundle max tokens must be at least 128.\"}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before building an AI context bundle.\"}"
+        }
+      ]
+    },
+    {
+      "name": "build_ai_context_bundle_snapshot",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/build_ai_context_bundle_snapshot",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["build_ai_context_bundle_snapshot"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"snapshotId\":\"ai-vector-snapshot-example\",\"query\":\"scan repository technologies\",\"limit\":5,\"maxTokens\":4000}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Persisted AI Context Bundle Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"query\":\"scan repository technologies\",\"content\":\"[S1] src/scanner.rs:1-80\\npub fn scan_repository() {}\",\"sources\":[{\"sourceId\":\"S1\",\"chunkId\":\"chunk-example\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92,\"tokenEstimate\":18}],\"tokenEstimate\":18,\"maxTokens\":4000,\"truncated\":false}"
+        },
+        {
+          "name": "Small Token Budget Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"ai_context_builder.max_tokens_too_small\",\"message\":\"AI context bundle max tokens must be at least 128.\"}"
+        },
+        {
+          "name": "Missing Snapshot Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"storage.sqlite_error\",\"message\":\"Query returned no rows\"}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before building saved AI context.\"}"
+        }
+      ]
+    },
+    {
+      "name": "ask_ai",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/ask_ai",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["ask_ai"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"question\":\"How does repository scanning detect technologies?\",\"limit\":5,\"maxContextTokens\":4000}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "AI Chat Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"question\":\"How does repository scanning detect technologies?\",\"answer\":\"Based on the retrieved repository context, the most relevant sources are [S1] src/scanner.rs:1-80.\",\"citations\":[{\"sourceId\":\"S1\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92}],\"context\":{\"query\":\"How does repository scanning detect technologies?\",\"content\":\"[S1] src/scanner.rs:1-80\\npub fn scan_repository() {}\",\"sources\":[{\"sourceId\":\"S1\",\"chunkId\":\"chunk-example\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92,\"tokenEstimate\":18}],\"tokenEstimate\":18,\"maxTokens\":4000,\"truncated\":false},\"model\":\"devatlas-local-grounded-v1\"}"
+        },
+        {
+          "name": "Missing Question Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"ai_retrieval.query_missing\",\"message\":\"AI retrieval query is required.\"}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before asking AI.\"}"
+        }
+      ]
+    },
+    {
+      "name": "ask_ai_snapshot",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/ask_ai_snapshot",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["ask_ai_snapshot"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"snapshotId\":\"ai-vector-snapshot-example\",\"question\":\"How does repository scanning detect technologies?\",\"limit\":5,\"maxContextTokens\":4000}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Persisted AI Chat Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"question\":\"How does repository scanning detect technologies?\",\"answer\":\"Based on the retrieved repository context, the most relevant sources are [S1] src/scanner.rs:1-80.\",\"citations\":[{\"sourceId\":\"S1\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92}],\"context\":{\"query\":\"How does repository scanning detect technologies?\",\"content\":\"[S1] src/scanner.rs:1-80\\npub fn scan_repository() {}\",\"sources\":[{\"sourceId\":\"S1\",\"chunkId\":\"chunk-example\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92,\"tokenEstimate\":18}],\"tokenEstimate\":18,\"maxTokens\":4000,\"truncated\":false},\"model\":\"devatlas-local-grounded-v1\"}"
+        },
+        {
+          "name": "Missing Snapshot Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"storage.sqlite_error\",\"message\":\"Query returned no rows\"}"
+        },
+        {
+          "name": "Scan Not Available Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"scan.not_available\",\"message\":\"Run a scan before asking saved AI context.\"}"
+        }
+      ]
+    },
+    {
+      "name": "start_chat_session",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/start_chat_session",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["start_chat_session"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\":\"Repository scanning discussion\"}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Chat Session Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"id\":\"chat-session-example\",\"repositoryId\":\"repo-example\",\"title\":\"Repository scanning discussion\",\"createdAtMs\":1710000000000,\"updatedAtMs\":1710000000000}"
+        },
+        {
+          "name": "Repository Not Open Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"repository.not_open\",\"message\":\"Open a repository before reading repository data.\"}"
+        }
+      ]
+    },
+    {
+      "name": "list_chat_sessions",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/list_chat_sessions",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["list_chat_sessions"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Chat Sessions Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "[{\"id\":\"chat-session-example\",\"repositoryId\":\"repo-example\",\"title\":\"Repository scanning discussion\",\"createdAtMs\":1710000000000,\"updatedAtMs\":1710000000100}]"
+        }
+      ]
+    },
+    {
+      "name": "list_chat_messages",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/list_chat_messages",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["list_chat_messages"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sessionId\":\"chat-session-example\"}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Chat Messages Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "[{\"id\":\"chat-message-user\",\"repositoryId\":\"repo-example\",\"sessionId\":\"chat-session-example\",\"role\":\"User\",\"content\":\"How does repository scanning detect technologies?\",\"model\":null,\"citationCount\":0,\"createdAtMs\":1710000000001},{\"id\":\"chat-message-assistant\",\"repositoryId\":\"repo-example\",\"sessionId\":\"chat-session-example\",\"role\":\"Assistant\",\"content\":\"Based on the retrieved repository context, the most relevant sources are [S1] src/scanner.rs:1-80.\",\"model\":\"devatlas-local-grounded-v1\",\"citationCount\":1,\"createdAtMs\":1710000000002}]"
+        },
+        {
+          "name": "Repository Mismatch Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"chat_session.repository_mismatch\",\"message\":\"Chat session does not belong to the opened repository.\"}"
+        }
+      ]
+    },
+    {
+      "name": "ask_ai_in_session",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/ask_ai_in_session",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["ask_ai_in_session"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sessionId\":\"chat-session-example\",\"question\":\"How does repository scanning detect technologies?\",\"limit\":5,\"maxContextTokens\":4000}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Session AI Chat Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"question\":\"How does repository scanning detect technologies?\",\"answer\":\"Based on the retrieved repository context, the most relevant sources are [S1] src/scanner.rs:1-80.\",\"citations\":[{\"sourceId\":\"S1\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92}],\"context\":{\"query\":\"How does repository scanning detect technologies?\",\"content\":\"[S1] src/scanner.rs:1-80\\npub fn scan_repository() {}\",\"sources\":[{\"sourceId\":\"S1\",\"chunkId\":\"chunk-example\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92,\"tokenEstimate\":18}],\"tokenEstimate\":18,\"maxTokens\":4000,\"truncated\":false},\"model\":\"devatlas-local-grounded-v1\"}"
+        }
+      ]
+    },
+    {
+      "name": "ask_ai_snapshot_in_session",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/ask_ai_snapshot_in_session",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["ask_ai_snapshot_in_session"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sessionId\":\"chat-session-example\",\"snapshotId\":\"ai-vector-snapshot-example\",\"question\":\"How does repository scanning detect technologies?\",\"limit\":5,\"maxContextTokens\":4000}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Session Persisted AI Chat Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"question\":\"How does repository scanning detect technologies?\",\"answer\":\"Based on the retrieved repository context, the most relevant sources are [S1] src/scanner.rs:1-80.\",\"citations\":[{\"sourceId\":\"S1\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92}],\"context\":{\"query\":\"How does repository scanning detect technologies?\",\"content\":\"[S1] src/scanner.rs:1-80\\npub fn scan_repository() {}\",\"sources\":[{\"sourceId\":\"S1\",\"chunkId\":\"chunk-example\",\"path\":\"src/scanner.rs\",\"startLine\":1,\"endLine\":80,\"score\":0.92,\"tokenEstimate\":18}],\"tokenEstimate\":18,\"maxTokens\":4000,\"truncated\":false},\"model\":\"devatlas-local-grounded-v1\"}"
+        }
+      ]
+    },
+    {
+      "name": "get_cloud_status",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/get_cloud_status",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["get_cloud_status"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Cloud Status Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"enabled\":false,\"status\":\"future-only\",\"supportLevel\":\"strategic-design\",\"tenantTypes\":[\"Individual\",\"Team\",\"Organization\",\"Enterprise\"],\"syncModes\":[\"Manual\",\"Scheduled\",\"Real-Time\"],\"deploymentModels\":[\"Shared SaaS\",\"Dedicated Tenant\",\"Self Hosted\",\"Air-Gapped\"],\"networkRequired\":false,\"cloudTablesEnabled\":false}"
+        }
+      ]
+    },
+    {
+      "name": "get_mcp_status",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/get_mcp_status",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["get_mcp_status"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "MCP Status Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"enabled\":false,\"status\":\"future-only\",\"supportLevel\":\"strategic-design\",\"transports\":[\"STDIO\",\"HTTP\",\"WebSocket\"],\"resources\":[\"repository://current\",\"architecture://overview\",\"graph://repository\",\"api://all\",\"database://schema\",\"git://history\",\"docs://generated\"],\"tools\":[\"scan_repository\",\"build_graph\",\"query_graph\",\"find_dependencies\",\"explain_module\",\"generate_diagram\",\"generate_docs\",\"ask_repository\",\"find_hotspots\",\"analyze_security\",\"analyze_performance\",\"build_context_package\",\"build_knowledge_package\"],\"prompts\":[\"Architecture Review\",\"Security Review\",\"Onboarding\",\"Refactoring\",\"ADR\",\"Repository Intelligence\"],\"authenticationRequired\":false,\"runtimeCrateEnabled\":false}"
+        }
+      ]
+    },
+    {
+      "name": "get_plugin_status",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/get_plugin_status",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["get_plugin_status"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Plugin Status Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"enabled\":false,\"status\":\"future-only\",\"supportLevel\":\"strategic-design\",\"categories\":[\"Scanner\",\"AI\",\"Diagram\",\"Export\",\"Analysis\",\"Integration\",\"MCP\"],\"lifecycle\":[\"Install\",\"Validate\",\"Load\",\"Initialize\",\"Run\",\"Unload\",\"Remove\"],\"permissions\":[\"Read Repository\",\"Read Settings\",\"Generate Reports\",\"Access AI Providers\",\"Access Network\",\"Create Files\",\"Modify Exports\"],\"manifestRequiredFields\":[\"id\",\"name\",\"version\",\"author\",\"description\",\"engineVersion\",\"permissions\"],\"sandboxRequired\":true,\"marketplaceEnabled\":false,\"runtimeCrateEnabled\":false,\"registryTableEnabled\":false,\"networkAccessEnabled\":false}"
+        }
+      ]
+    },
+    {
+      "name": "get_performance_status",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/get_performance_status",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["get_performance_status"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Performance Status Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"enabled\":false,\"status\":\"future-only\",\"supportLevel\":\"strategic-design\",\"analysisDomains\":[\"Code Complexity\",\"Dependency Complexity\",\"Repository Scale\",\"Architectural Complexity\",\"API Performance\",\"Database Performance\",\"Frontend Performance\"],\"metrics\":[\"Cyclomatic Complexity\",\"Cognitive Complexity\",\"Dependency Density\",\"Graph Density\",\"Coupling\",\"Cohesion\"],\"riskLevels\":[\"Low\",\"Medium\",\"High\",\"Critical\"],\"thresholds\":[\"Medium Function: 50+ lines\",\"High Function: 100+ lines\",\"Critical Function: 200+ lines\"],\"reportTypes\":[\"Complexity Report\",\"Dependency Report\",\"Scalability Report\",\"Optimization Recommendations\"],\"runtimeCrateEnabled\":false,\"reportTablesEnabled\":false,\"profilingEnabled\":false,\"recommendationsEnabled\":false}"
+        }
+      ]
+    },
+    {
+      "name": "get_security_status",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/get_security_status",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["get_security_status"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Security Status Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"enabled\":false,\"status\":\"future-only\",\"supportLevel\":\"strategic-design\",\"securityDomains\":[\"Source Code Security\",\"Dependency Security\",\"Configuration Security\",\"Architecture Security\",\"API Security\",\"Infrastructure Security\"],\"secretCategories\":[\"API Keys\",\"JWT Secrets\",\"Database Credentials\",\"Cloud Credentials\",\"Private Keys\",\"Access Tokens\"],\"dependencySources\":[\"NVD\",\"OSV\",\"GitHub Advisories\"],\"owaspMappings\":[\"Broken Access Control\",\"Cryptographic Failures\",\"Injection\",\"Security Misconfiguration\"],\"riskLevels\":[\"Informational\",\"Low\",\"Medium\",\"High\",\"Critical\"],\"reportTypes\":[\"Executive Summary\",\"Developer Findings\",\"Dependency Vulnerability Report\",\"Configuration Risk Report\"],\"runtimeCrateEnabled\":false,\"reportTablesEnabled\":false,\"secretValueExportEnabled\":false,\"vulnerabilityNetworkLookupEnabled\":false,\"dashboardEnabled\":false}"
+        }
+      ]
+    },
+    {
+      "name": "get_git_status",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/get_git_status",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["get_git_status"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Git Status Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"enabled\":false,\"status\":\"future-only\",\"supportLevel\":\"strategic-design\",\"dataSources\":[\"Commits\",\"Branches\",\"Tags\",\"Authors\",\"Changed Files\",\"Directories\"],\"analysisDomains\":[\"Repository Timeline\",\"Contributor Intelligence\",\"Ownership Mapping\",\"Hotspot Analysis\",\"Architecture Drift\",\"Change Impact\",\"Historical Architecture\"],\"graphNodeTypes\":[\"Contributor\",\"Commit\",\"Branch\",\"Tag\"],\"relationshipTypes\":[\"Owns\",\"Modified\",\"Created\",\"Reviewed\",\"Depends On\"],\"reportTypes\":[\"Timeline Report\",\"Ownership Report\",\"Hotspot Report\",\"Architecture Drift Report\",\"Historical Architecture Snapshot\"],\"runtimeCrateEnabled\":false,\"historyMutationEnabled\":false,\"repositoryTimelineEnabled\":false,\"ownershipAnalysisEnabled\":false,\"hotspotAnalysisEnabled\":false,\"driftDetectionEnabled\":false}"
+        }
+      ]
+    },
+    {
+      "name": "get_graph",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/get_graph",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["get_graph"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Graph Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"nodes\":[{\"id\":\"node-1\",\"nodeType\":\"Repository\",\"name\":\"sample\"}],\"edges\":[{\"id\":\"edge-1\",\"source\":\"node-1\",\"target\":\"node-2\",\"edgeType\":\"Imports\"}]}"
+        }
+      ]
+    },
+    {
+      "name": "get_backend_status",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/get_backend_status",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["get_backend_status"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Backend Status Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"architecture\":\"React -> Tauri Commands -> App Core -> Rust Engines -> Storage\",\"commandLayer\":\"tauri-v2\",\"structuredErrors\":true,\"eventBusEnabled\":true,\"storageEnabled\":true,\"businessLogicInRust\":true,\"networkCallsEnabled\":false,\"serviceCrates\":[\"common\",\"storage-engine\",\"scanner-engine\",\"parser-engine\",\"graph-engine\",\"docs-engine\",\"uml-engine\",\"export-engine\",\"ai-engine\",\"app-core\"],\"futureCrates\":[\"git-engine\",\"security-engine\",\"performance-engine\",\"plugin-engine\",\"mcp-server\"]}"
+        }
+      ]
+    },
+    {
+      "name": "get_storage_status",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/get_storage_status",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["get_storage_status"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Storage Status Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"primaryStore\":\"SQLite\",\"operationalTables\":[\"repositories\",\"projects\",\"scans\",\"technologies\",\"exports\"],\"snapshotTables\":[\"graph_snapshots\",\"ai_vector_snapshots\",\"chat_sessions\",\"chat_messages\"],\"futureTables\":[\"modules\",\"apis\",\"models\",\"reports\",\"diagrams\",\"ai_context_exports\",\"plugin_registry\",\"settings\",\"user_profiles\",\"repository_health\",\"contributors\",\"hotspots\",\"ownership\",\"graph_nodes\",\"graph_edges\"],\"vectorStoreEnabled\":false,\"vectorStore\":\"SQLite JSON snapshots for deterministic local embeddings\",\"searchIndexEnabled\":false,\"searchIndex\":\"Tantivy is reserved for future full-text indexing\",\"graphEngineEnabled\":true,\"graphPersistence\":\"Petgraph-style in-memory graph persisted as SQLite JSON snapshots\",\"jsonSnapshotsEnabled\":true,\"cloudTablesEnabled\":false}"
+        }
+      ]
+    },
+    {
+      "name": "build_repository_memory",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "tauri://command/build_repository_memory",
+          "protocol": "tauri",
+          "host": ["command"],
+          "path": ["build_repository_memory"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": [
+        {
+          "name": "Repository Memory Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"repositoryId\":\"repo-example\",\"repositoryName\":\"sample\",\"path\":\"C:\\\\code\\\\sample\",\"scanId\":\"scan-example\",\"filesCount\":120,\"foldersCount\":24,\"technologies\":[{\"category\":\"Language\",\"name\":\"TypeScript\",\"version\":null}],\"graphNodes\":240,\"graphEdges\":315,\"documentCount\":5,\"diagramCount\":4,\"lastExportPath\":\"C:\\\\exports\\\\project-knowledge.zip\",\"aiContextChunks\":42,\"aiEmbeddingCount\":42,\"aiModel\":\"devatlas-local-hash-v1\",\"recentQuestions\":[\"How does repository scanning detect technologies?\"],\"updatedAtMs\":1710000000000}"
+        },
+        {
+          "name": "Repository Not Open Error",
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": "{\"code\":\"repository.not_open\",\"message\":\"Open a repository before reading repository data.\"}"
+        }
+      ]
+    }
+  ]
+}

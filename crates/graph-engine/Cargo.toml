@@ -1,0 +1,10 @@
+[package]
+name = "devatlas-graph-engine"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+devatlas-common = { path = "../common" }
+devatlas-parser-engine = { path = "../parser-engine" }
+petgraph = "0.6"

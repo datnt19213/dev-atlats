@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Grants the DevAtlas main window access to core Tauri IPC and folder dialogs.",
+  "windows": ["main"],
+  "permissions": ["core:default", "dialog:default", "shell:default"]
+}

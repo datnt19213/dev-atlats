@@ -1,0 +1,28 @@
+{
+  "name": "devatlas",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "yarn@1.22.22",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "yarn workspace @devatlas/desktop dev",
+    "web:dev": "yarn workspace @devatlas/desktop web:dev",
+    "build": "yarn workspace @devatlas/desktop build",
+    "format:check": "cargo fmt --all -- --check",
+    "lint": "yarn lint:rust && yarn lint:frontend",
+    "lint:frontend": "yarn workspace @devatlas/desktop lint",
+    "lint:rust": "cargo clippy --workspace --all-targets -- -D warnings",
+    "release:checksums": "node scripts/generate-release-checksums.mjs",
+    "contract:check": "node tooling/validate-project-contract.mjs",
+    "mvp:check": "node tooling/validate-mvp-completion.mjs",
+    "roadmap:check": "node tooling/validate-roadmap-contract.mjs",
+    "release:check": "node tooling/validate-release-readiness.mjs",
+    "structure:check": "node tooling/validate-workspace-structure.mjs",
+    "typecheck": "yarn workspace @devatlas/desktop typecheck",
+    "test": "yarn workspace @devatlas/desktop test",
+    "tauri": "yarn workspace @devatlas/desktop tauri",
+    "validate": "yarn structure:check && yarn contract:check && yarn roadmap:check && yarn mvp:check && yarn release:check && yarn format:check && yarn lint && cargo test --workspace && yarn typecheck && yarn test && yarn build"
+  }
+}

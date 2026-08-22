@@ -1,0 +1,7 @@
+services:
+  devatlas-workspace:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: bash -lc "echo DevAtlas workspace validation image built successfully"

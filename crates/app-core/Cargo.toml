@@ -1,0 +1,17 @@
+[package]
+name = "devatlas-app-core"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+devatlas-ai-engine = { path = "../ai-engine" }
+devatlas-common = { path = "../common" }
+devatlas-docs-engine = { path = "../docs-engine" }
+devatlas-export-engine = { path = "../export-engine" }
+devatlas-graph-engine = { path = "../graph-engine" }
+devatlas-parser-engine = { path = "../parser-engine" }
+devatlas-scanner-engine = { path = "../scanner-engine" }
+devatlas-storage-engine = { path = "../storage-engine" }
+devatlas-uml-engine = { path = "../uml-engine" }
+tokio = { version = "1", features = ["sync"] }

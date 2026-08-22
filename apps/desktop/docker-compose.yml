@@ -1,0 +1,8 @@
+services:
+  desktop:
+    build:
+      context: ../..
+      dockerfile: apps/desktop/Dockerfile
+    working_dir: /app
+    command: bash -lc "echo DevAtlas desktop container is for validation builds"
+

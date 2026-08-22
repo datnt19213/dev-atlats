@@ -1,0 +1,8 @@
+[package]
+name = "devatlas-ai-engine"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+devatlas-common = { path = "../common" }
