@@ -37,8 +37,6 @@ The Scanner page supports:
 - Selecting analysis scope by folder or file
 - Surfacing scan results into dashboard, explorer, graph, documentation, diagram, and export flows
 
-The scanner walks all source files by default and excludes dependency, build, cache, and generated-output folders such as `.git`, `node_modules`, `target`, `dist`, `build`, `out`, `coverage`, `.next`, `.turbo`, `.cache`, `.vite`, and `vendor`. The optional `maxFiles` command argument and Settings field can cap the scan for very large repositories, but the default remains uncapped for complete local code analysis.
-
 ### Explorer
 
 The Explorer page lists repository files with a file tree, copy actions, and refresh controls.
