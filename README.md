@@ -141,6 +141,45 @@ The sidebar is a source-owned React component in `apps/desktop/src/components/ap
 
 The app uses GSAP for page-stage transitions when navigating between desktop views. Page content enters with a short clip, blur, and staggered section reveal; buttons own local press and hover micro-interactions. The animation is scoped to the React presentation layer, respects reduced-motion preferences, and does not affect Tauri command execution or Rust business logic.
 
+## Release
+
+The release pipeline builds a Windows NSIS installer (`.exe`) and uploads it to GitHub Releases. The installer version is synced from the GitHub release tag, so a tag like `v0.2.0` produces `DevAtlas_0.2.0_x64-setup.exe`.
+
+### Local build
+
+```bash
+yarn tauri build
+```
+
+The NSIS installer output is located at:
+
+```text
+apps/desktop/src-tauri/target/release/bundle/nsis/*.exe
+```
+
+### CI workflow
+
+GitHub Actions builds the release artifact when a GitHub Release is published. The workflow:
+
+1. Syncs `apps/desktop/src-tauri/tauri.conf.json` version from the release tag
+2. Builds the Tauri app with NSIS target only
+3. Copies the installer `.exe` into `artifacts/`
+4. Generates SHA-256 checksums via `yarn release:checksums`
+5. Uploads the `.exe` and checksums to the GitHub Release
+
+### Release checklist
+
+1. Update `apps/desktop/src-tauri/tauri.conf.json` version if needed
+2. Commit and push code
+3. Create and push a version tag:
+   ```bash
+   git tag v0.2.0
+   git push --tags
+   ```
+4. Publish a GitHub Release from the tag
+5. Wait for the Release workflow to finish
+6. Verify the `.exe` and `sha256-checksums.txt` are attached to the release
+
 ## Docker
 
 Build and run the workspace containers:
