@@ -1,6 +1,6 @@
 ﻿# DevAtlas
 
-DevAtlas is a desktop-first repository intelligence platform. The current implementation focuses on the MVP desktop shell under `apps/desktop/src`: repository scanning, repository explorer, semantic graph visualization, documentation generation, diagram generation, knowledge package export, and local workspace settings.
+DevAtlas is a desktop-first repository intelligence platform. Repository scanning, repository explorer, semantic graph visualization, documentation generation, diagram generation, knowledge package export, and local workspace settings.
 
 AI Chat, cloud sync, marketplace, team collaboration, security dashboards, performance dashboards, MCP runtime, and plugin runtime are outside the current MVP UI scope.
 
