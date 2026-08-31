@@ -906,10 +906,10 @@ mod tests {
         }];
         let diagrams = vec![DiagramResult {
             id: DiagramId("diagram-1".to_string()),
-            path: "diagram.mmd".to_string(),
+            path: "diagram.puml".to_string(),
             diagram_type: DiagramType::Component,
-            format: DiagramFormat::Mermaid,
-            content: "graph TD".to_string(),
+            format: DiagramFormat::PlantUml,
+            content: "@startuml\n@enduml\n".to_string(),
         }];
         let context = ContextBuildResult {
             chunks: Vec::new(),

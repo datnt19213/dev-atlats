@@ -217,7 +217,6 @@ pub enum DiagramType {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DiagramFormat {
-    Mermaid,
     PlantUml,
     Svg,
 }

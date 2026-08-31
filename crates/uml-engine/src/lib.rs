@@ -17,10 +17,10 @@ impl UmlService {
             },
             DiagramResult {
                 id: DiagramId(stable_id("diagram", "component")),
-                path: "diagrams/component.mmd".to_string(),
+                path: "diagrams/component.puml".to_string(),
                 diagram_type: DiagramType::Component,
-                format: DiagramFormat::Mermaid,
-                content: component_mermaid(scan, graph),
+                format: DiagramFormat::PlantUml,
+                content: component_plantuml(scan, graph),
             },
             DiagramResult {
                 id: DiagramId(stable_id("diagram", "dependency")),
@@ -31,10 +31,10 @@ impl UmlService {
             },
             DiagramResult {
                 id: DiagramId(stable_id("diagram", "erd")),
-                path: "diagrams/erd.mmd".to_string(),
+                path: "diagrams/erd.puml".to_string(),
                 diagram_type: DiagramType::Erd,
-                format: DiagramFormat::Mermaid,
-                content: erd_mermaid(scan),
+                format: DiagramFormat::PlantUml,
+                content: erd_plantuml(scan),
             },
             DiagramResult {
                 id: DiagramId(stable_id("diagram", "folder")),
@@ -45,17 +45,17 @@ impl UmlService {
             },
             DiagramResult {
                 id: DiagramId(stable_id("diagram", "package")),
-                path: "diagrams/package.mmd".to_string(),
+                path: "diagrams/package.puml".to_string(),
                 diagram_type: DiagramType::Package,
-                format: DiagramFormat::Mermaid,
-                content: package_mermaid(scan, graph),
+                format: DiagramFormat::PlantUml,
+                content: package_plantuml(scan, graph),
             },
             DiagramResult {
                 id: DiagramId(stable_id("diagram", "architecture-overview")),
-                path: "diagrams/architecture-overview.mmd".to_string(),
+                path: "diagrams/architecture-overview.puml".to_string(),
                 diagram_type: DiagramType::ArchitectureOverview,
-                format: DiagramFormat::Mermaid,
-                content: architecture_overview_mermaid(scan, graph),
+                format: DiagramFormat::PlantUml,
+                content: architecture_overview_plantuml(scan, graph),
             },
         ]
     }
@@ -123,19 +123,20 @@ fn class_plantuml(graph: &KnowledgeGraph) -> String {
     lines.join("\n")
 }
 
-fn component_mermaid(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
+fn component_plantuml(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
     let mut lines = vec![
-        "flowchart TD".to_string(),
-        "    Repository[\"Repository\"]".to_string(),
+        "@startuml".to_string(),
+        "rectangle \"Repository\" as Repository".to_string(),
     ];
     for (index, technology) in scan.technologies.iter().take(50).enumerate() {
         let node_id = format!("Technology_{index}");
         lines.push(format!(
-            "    {node_id}[\"{}: {}\"]",
+            "rectangle \"{}: {}\" as {}",
             escape_diagram_label(technology.category.as_str()),
-            escape_diagram_label(&technology.name)
+            escape_diagram_label(&technology.name),
+            node_id
         ));
-        lines.push(format!("    Repository --> {node_id}"));
+        lines.push(format!("Repository --> {}", node_id));
     }
     for (index, module) in graph
         .nodes
@@ -146,12 +147,14 @@ fn component_mermaid(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
     {
         let node_id = format!("Module_{index}");
         lines.push(format!(
-            "    {node_id}[\"Directory: {}\"]",
-            escape_diagram_label(&module.name)
+            "rectangle \"Directory: {}\" as {}",
+            escape_diagram_label(&module.name),
+            node_id
         ));
-        lines.push(format!("    Repository --> {node_id}"));
+        lines.push(format!("Repository --> {}", node_id));
     }
     lines.push(String::new());
+    lines.push("@enduml".to_string());
     lines.join("\n")
 }
 
@@ -187,7 +190,7 @@ fn dependency_plantuml(graph: &KnowledgeGraph) -> String {
     format!("@startuml\n{}\n@enduml\n", edges)
 }
 
-fn erd_mermaid(scan: &ScanResult) -> String {
+fn erd_plantuml(scan: &ScanResult) -> String {
     let database_nodes = scan
         .technologies
         .iter()
@@ -206,29 +209,35 @@ fn erd_mermaid(scan: &ScanResult) -> String {
         .collect::<Vec<String>>();
 
     if database_nodes.is_empty() && schema_nodes.is_empty() {
-        return "erDiagram\n    REPOSITORY_SCHEMA {\n        string status \"No database schema detected\"\n    }\n"
-            .to_string();
+        return "@startuml\nentity \"No database schema detected\" as NoSchema\n@enduml\n".to_string();
     }
 
-    let mut lines = vec!["erDiagram".to_string()];
+    let mut lines = vec!["@startuml".to_string()];
     for database in &database_nodes {
         lines.push(format!(
-            "    {database} {{\n        string source \"Detected technology\"\n    }}"
+            "entity \"{}\" as {} {{\n  string source \"Detected technology\"\n}}",
+            database,
+            database
         ));
     }
     for schema in &schema_nodes {
         lines.push(format!(
-            "    {schema} {{\n        string path \"Candidate schema file\"\n    }}"
+            "entity \"{}\" as {} {{\n  string path \"Candidate schema file\"\n}}",
+            schema,
+            schema
         ));
     }
     for database in &database_nodes {
         for schema in &schema_nodes {
             lines.push(format!(
-                "    {database} ||--o{{ {schema} : \"contains candidate schema\""
+                "{} ||--o{{ {} : \"contains candidate schema\"",
+                database,
+                schema
             ));
         }
     }
     lines.push(String::new());
+    lines.push("@enduml".to_string());
     lines.join("\n")
 }
 
@@ -274,7 +283,7 @@ fn folder_svg(scan: &ScanResult) -> String {
     )
 }
 
-fn package_mermaid(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
+fn package_plantuml(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
     let mut package_names = scan
         .files
         .iter()
@@ -284,9 +293,9 @@ fn package_mermaid(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
     package_names.sort();
     package_names.dedup();
 
-    let mut lines = vec!["flowchart TD".to_string()];
+    let mut lines = vec!["@startuml".to_string()];
     if package_names.is_empty() {
-        lines.push("    Repository[\"No packages detected\"]".to_string());
+        lines.push("rectangle \"No packages detected\" as NoPackages".to_string());
         lines.push(String::new());
         return lines.join("\n");
     }
@@ -299,8 +308,9 @@ fn package_mermaid(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
     for package in &package_names {
         if let Some(node_id) = package_ids.get(package.as_str()) {
             lines.push(format!(
-                "    {node_id}[\"Package: {}\"]",
-                escape_diagram_label(package)
+                "rectangle \"Package: {}\" as {}",
+                escape_diagram_label(package),
+                node_id
             ));
         }
     }
@@ -344,43 +354,46 @@ fn package_mermaid(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
             .unwrap_or_else(|| format!("ExternalTarget_{index}"));
         if !package_ids.contains_key(target.as_str()) {
             lines.push(format!(
-                "    {target_id}[\"External: {}\"]",
-                escape_diagram_label(target)
+                "rectangle \"External: {}\" as {}",
+                escape_diagram_label(target),
+                target_id
             ));
         }
-        lines.push(format!("    {source_id} --> {target_id}"));
+        lines.push(format!("{} --> {}", source_id, target_id));
     }
     lines.push(String::new());
+    lines.push("@enduml".to_string());
     lines.join("\n")
 }
 
-fn architecture_overview_mermaid(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
+fn architecture_overview_plantuml(scan: &ScanResult, graph: &KnowledgeGraph) -> String {
     let mut lines = vec![
-        "flowchart LR".to_string(),
-        "    Repository[\"Repository\"]".to_string(),
-        format!("    Scanner[\"Scanner: {} files\"]", scan.files_count),
+        "@startuml".to_string(),
+        "rectangle \"Repository\" as Repository".to_string(),
+        format!("rectangle \"Scanner: {} files\" as Scanner", scan.files_count),
         format!(
-            "    Graph[\"Knowledge Graph: {} nodes\"]",
+            "rectangle \"Knowledge Graph: {} nodes\" as Graph",
             graph.nodes.len()
         ),
-        "    Documentation[\"Documentation\"]".to_string(),
-        "    Diagrams[\"Diagrams\"]".to_string(),
-        "    Export[\"Knowledge Package\"]".to_string(),
-        "    Repository --> Scanner".to_string(),
-        "    Scanner --> Graph".to_string(),
-        "    Graph --> Documentation".to_string(),
-        "    Graph --> Diagrams".to_string(),
-        "    Documentation --> Export".to_string(),
-        "    Diagrams --> Export".to_string(),
+        "rectangle \"Documentation\" as Documentation".to_string(),
+        "rectangle \"Diagrams\" as Diagrams".to_string(),
+        "rectangle \"Knowledge Package\" as Export".to_string(),
+        "Repository --> Scanner".to_string(),
+        "Scanner --> Graph".to_string(),
+        "Graph --> Documentation".to_string(),
+        "Graph --> Diagrams".to_string(),
+        "Documentation --> Export".to_string(),
+        "Diagrams --> Export".to_string(),
     ];
     for (index, technology) in scan.technologies.iter().take(50).enumerate() {
         let node_id = format!("Technology_{index}");
         lines.push(format!(
-            "    {node_id}[\"{}: {}\"]",
+            "rectangle \"{}: {}\" as {}",
             escape_diagram_label(technology.category.as_str()),
-            escape_diagram_label(&technology.name)
+            escape_diagram_label(&technology.name),
+            node_id
         ));
-        lines.push(format!("    Scanner --> {node_id}"));
+        lines.push(format!("Scanner --> {}", node_id));
     }
     let mut package_names = scan
         .files
@@ -392,12 +405,14 @@ fn architecture_overview_mermaid(scan: &ScanResult, graph: &KnowledgeGraph) -> S
     for (index, package) in package_names.iter().take(24).enumerate() {
         let node_id = format!("Package_{index}");
         lines.push(format!(
-            "    {node_id}[\"Package: {}\"]",
-            escape_diagram_label(package)
+            "rectangle \"Package: {}\" as {}",
+            escape_diagram_label(package),
+            node_id
         ));
-        lines.push(format!("    Graph --> {node_id}"));
+        lines.push(format!("Graph --> {}", node_id));
     }
     lines.push(String::new());
+    lines.push("@enduml".to_string());
     lines.join("\n")
 }
 
@@ -555,6 +570,7 @@ mod tests {
             .find(|diagram| diagram.diagram_type == DiagramType::Component)
             .expect("component diagram should be generated");
         assert!(component.content.contains("Directory: src/api"));
+        assert!(component.content.contains("@startuml"));
         let dependency = diagrams
             .iter()
             .find(|diagram| diagram.diagram_type == DiagramType::Dependency)
@@ -566,17 +582,20 @@ mod tests {
             .iter()
             .find(|diagram| diagram.diagram_type == DiagramType::Erd)
             .expect("ERD should be generated");
+        assert!(erd.content.contains("@startuml"));
         assert!(erd.content.contains("PRISMA"));
         assert!(erd.content.contains("PRISMA_SCHEMA_PRISMA"));
         let package = diagrams
             .iter()
             .find(|diagram| diagram.diagram_type == DiagramType::Package)
             .expect("package diagram should be generated");
+        assert!(package.content.contains("@startuml"));
         assert!(package.content.contains("Package: prisma"));
         let architecture = diagrams
             .iter()
             .find(|diagram| diagram.diagram_type == DiagramType::ArchitectureOverview)
             .expect("architecture overview should be generated");
+        assert!(architecture.content.contains("@startuml"));
         assert!(architecture.content.contains("Knowledge Package"));
     }
 }

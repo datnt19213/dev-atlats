@@ -16,7 +16,6 @@ import { Sidebar } from "@/components/ui/sidebar";
 import { navigation, pageTitle, type Page } from "@/handlers/navigation";
 import { DiagramPreview } from "@/components/ui/diagram-preview";
 import { encode } from "plantuml-encoder";
-import mermaid from "mermaid";
 import { open } from "@tauri-apps/plugin-shell";
 import { useAppControllerContext } from "@/providers/AppControllerProvider";
 import { cn } from "@/lib/utils";
@@ -54,7 +53,7 @@ export function AppLayout({ children }: { children: ReactNode }): ReactElement {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [preview, onCloseModal]);
-  const handleOpenInBrowser = useCallback(async () => {
+  const handleOpenInBrowser = useCallback(() => {
     if (!preview) return;
     const { content, format } = preview;
     const normalizedFormat = (format ?? "text").toLowerCase();
@@ -62,22 +61,6 @@ export function AppLayout({ children }: { children: ReactNode }): ReactElement {
     let url: string;
     if (normalizedFormat === "plantuml") {
       url = "https://www.plantuml.com/plantuml/svg/" + encode(content);
-    } else if (normalizedFormat === "mermaid") {
-      const id = "mermaid-open-" + Math.random().toString(36).slice(2);
-      const tempDiv = document.createElement("div");
-      tempDiv.style.position = "absolute";
-      tempDiv.style.left = "-9999px";
-      document.body.appendChild(tempDiv);
-      try {
-        const { svg } = await mermaid.render(id, content);
-        const blob = new Blob([svg], { type: "image/svg+xml" });
-        url = URL.createObjectURL(blob);
-      } catch (err) {
-        console.error("Failed to render Mermaid diagram:", err);
-        return;
-      } finally {
-        document.body.removeChild(tempDiv);
-      }
     } else if (normalizedFormat === "svg") {
       const blob = new Blob([content], { type: "image/svg+xml" });
       url = URL.createObjectURL(blob);

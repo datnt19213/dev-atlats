@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
-import mermaid from "mermaid";
+import { useEffect, useRef, useState } from "react";
 import { encode } from "plantuml-encoder";
 
 export interface DiagramPreviewProps {
@@ -12,24 +11,14 @@ export interface DiagramPreviewProps {
 export function DiagramPreview(props: DiagramPreviewProps): ReactElement {
   const ref = useRef<HTMLDivElement | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const normalizedFormat = useMemo(() => props.format.toLowerCase(), [props.format]);
+  const normalizedFormat = props.format.toLowerCase();
 
   useEffect(() => {
     if (!ref.current) return;
     setError(null);
     ref.current.innerHTML = "";
 
-    if (normalizedFormat === "mermaid") {
-      const id = "mermaid-" + Math.random().toString(36).slice(2);
-      mermaid.initialize({ startOnLoad: false, theme: "default" });
-      mermaid.render(id, props.content)
-        .then(({ svg }) => {
-          if (ref.current) ref.current.innerHTML = svg;
-        })
-        .catch((err) => {
-          setError(err instanceof Error ? err.message : "Failed to render diagram");
-        });
-    } else if (normalizedFormat === "plantuml") {
+    if (normalizedFormat === "plantuml") {
       try {
         const encoded = encode(props.content);
         const url = "https://www.plantuml.com/plantuml/svg/" + encoded;

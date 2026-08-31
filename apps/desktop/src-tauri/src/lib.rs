@@ -1653,6 +1653,7 @@ fn get_storage_status() -> StorageReadinessDto {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_shell::init())
         .setup(|app| {
             let app_data_dir = app.path().app_data_dir()?;
             std::fs::create_dir_all(&app_data_dir)?;
@@ -2359,7 +2360,6 @@ fn diagram_type_to_string(diagram_type: &DiagramType) -> String {
 
 fn diagram_format_to_string(format: &DiagramFormat) -> String {
     match format {
-        DiagramFormat::Mermaid => "Mermaid",
         DiagramFormat::PlantUml => "PlantUML",
         DiagramFormat::Svg => "SVG",
     }
